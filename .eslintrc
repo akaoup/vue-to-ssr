@@ -1,0 +1,20 @@
+{
+	"parserOptions": {
+    "parser": "babel-eslint"
+  },
+  "extends": [
+    "plugin:vue/essential", 
+    "standard"
+    
+  ],
+  // required to lint *.vue files
+  "plugins": [
+  	"html",
+    "vue"
+  ],
+	"rules": {
+  	"no-tabs": "off",
+  	"no-console": "off"
+	}
+ 
+}
