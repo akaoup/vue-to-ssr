@@ -12,6 +12,7 @@ import Item from './item.vue'
 import Tabs from './tabs.vue'
 let id = 0
 export default {
+  name: 'Todo',
   data () {
     return {
       todos: [],
@@ -58,6 +59,15 @@ export default {
       this.todos = this.todos.filter(todo => !todo.completed)
     }
   }
+  // beforeRouteEnter (to, from, next) {
+  //   console.log('todo before enter')
+  // },
+  // beforeRouteUpdate (to, from, next) {
+  //   console.log('todo update enter')
+  // },
+  // beforeRouteLeave (to, from, next) {
+  //   console.log('todo leave enter')
+  // }
 }
 </script>
 

@@ -33,11 +33,16 @@ const defaultPluins = [
 const devServer = {
 		port: '8000',
 		host: '0.0.0.0',
-		//错误显示到页面
+		// 错误显示到页面
 		overlay: {
 			error: true,
 		},
-		//热刷新，页面不刷新内容也加载
+		// 对于 服务器没有对我们前端路由做处理的时候，会 Cannot GET /xxx
+		// 另外，如果给服务器配置了public path的话，这里也要改成 '/public/index.html'
+		historyApiFallback: {
+			index: '/index.html'
+		},
+		// 热刷新，页面不刷新内容也加载
 		hot: true
 }
 
