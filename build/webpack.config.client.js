@@ -45,7 +45,8 @@ const devServer = {
 		historyApiFallback: {
 			index: '/index.html'
 		},
-		
+		//开发环境，允许跨域
+		headers: {'Access-Control-Allow-Origin': '*'},
 		// 热刷新，页面不刷新内容也加载
 		hot: true
 }

@@ -9,9 +9,12 @@
         <transition name="fade" mode="out-in">
             <router-view></router-view>
         </transition>
+        <button @click="handleNotify">test notify </button>
+        <!-- <notification content="test notify"></notification> -->
 		<Footer></Footer>
 	</div>
 </template>
+
 <script>
 import Header from './layout/header.vue'
 import Footer from './layout/footer.vue'
@@ -21,11 +24,25 @@ export default {
     metaInfo: {
         title: 'connie\'s Todo App'
     },
-  components: {
-    Header,
-    // Todo,
-    Footer
-  }
+    components: {
+        Header,
+        // Todo,
+        Footer
+    },
+    methods: {
+        handleNotify () {
+            this.$notify({
+                content: 'test $notify',
+                btn: 'close'
+            })
+        }
+    },
+    mounted () {
+        // this.$notify({
+        //     content: 'test $notify',
+        //     btn: 'close'
+        // })
+    }
 }
 </script>
 
