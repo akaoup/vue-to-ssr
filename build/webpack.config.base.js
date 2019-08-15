@@ -10,12 +10,15 @@ const config = {
 	mode: process.env.NODE_ENV || 'production',
 	target: 'web',
 	//入口文件
-	entry: path.join(__dirname, '../clientsrc/index.js' ),
+	entry: path.join(__dirname, '../clientsrc/client-entry.js' ),
 	
 	//打包出来的文件
 	output: {
 		filename:'bundle.[hash:8].js',
-		path: path.join(__dirname,'../dist')
+		path: path.join(__dirname,'../dist'),
+		// 加这个配置是因为打包好的js文件渲染服务器时node不能跨域访问
+		// webpack output is served from http://127.0.0.1:8000/
+		publicPath: 'http://127.0.0.1:8000/'
 	},
 
 	//eslint-loader:对于这几种文件在使用真正的loader(lvue-oader)前，先通过eslint-loader预处理一遍

@@ -13,6 +13,8 @@ const merge = require('webpack-merge')
 //引入公共配置文件
 const baseConfig = require('./webpack.config.base.js')
 
+// 自动生成一个json文件，用于客户端插件
+const VueClientPlugin = require('vue-server-renderer/client-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -20,6 +22,7 @@ const isDev = process.env.NODE_ENV === 'development'
 const defaultPluins = [
 		new VueLoaderPlugin(),
 		new HTMLPlugin(),
+		new VueClientPlugin(),
 
     //适用于开发版本同线上版本在某些常量上有区别的场景:
     //记得引入webpack
@@ -42,6 +45,7 @@ const devServer = {
 		historyApiFallback: {
 			index: '/index.html'
 		},
+		
 		// 热刷新，页面不刷新内容也加载
 		hot: true
 }
@@ -87,11 +91,11 @@ if (isDev) {
 } else {
 	config = merge(baseConfig, {
 		entry: {
-			app: path.join(__dirname, '../clientsrc/index.js'),
-
+			app: path.join(__dirname, '../clientsrc/client-entry.js'),
 		},
 		output: {
-			filename: '[name].[chunkhash:8].js'
+			filename: '[name].[chunkhash:8].js',
+			publicPath: '/dist/'
 		},
 		module: {
 			rules: [
@@ -133,6 +137,3 @@ if (isDev) {
 }
 
 module.exports = config
-
-
-

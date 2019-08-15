@@ -4,9 +4,7 @@
 		<Item :todo="todo" v-for="todo in filteredTodos" :key="todo.id" @del="deletTodo"></Item>
 		<Tabs :filter="filter" :todos="todos" @toggle="toggleFitter" @clear="clearCompleted"></Tabs>
 	</section>
-
 </template>
-
 <script>
 import Item from './item.vue'
 import Tabs from './tabs.vue'

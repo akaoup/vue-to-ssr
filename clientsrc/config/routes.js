@@ -1,3 +1,6 @@
+import Todo from '../views/todo/todo.vue'
+import Login from '../views/login/login.vue'
+
 export default [
 	{
 		path: '/',
@@ -5,7 +8,8 @@ export default [
 	},
 	{
 		path: '/app',
-		component: () => import('../views/todo/todo.vue')
+		component: Todo
+		// component: () => import('../views/todo/todo.vue')
 		// 多个vue-router
 		// components: {
 		// 	default: Todo,
@@ -14,7 +18,8 @@ export default [
 	},
 	{
 		path: '/login',
-		component: () => import('../views/login/login.vue')
+		component: Login
+		// component: () => import('../views/login/login.vue')
 		// 路由里定义钩子
 		// beforeEnter (to, from, next) {
 		// console.log('login route before enter')
