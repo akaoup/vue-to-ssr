@@ -1,29 +1,60 @@
 <template>
 	<section class="todo-app">
-		<input type="text" class="add-item" autofocus placeholder="sth to do" @keyup.enter="addTodo">
-		<Item :todo="todo" v-for="todo in filteredTodos" :key="todo.id" @del="deletTodo"></Item>
-		<Tabs :filter="filter" :todos="todos" @toggle="toggleFitter" @clear="clearCompleted"></Tabs>
+    <div class="tab-container">
+      <tabs :value="tabValue" @change="handleChangeTab">
+        <tab :label="tab" :index="tab" v-for="tab in states" :key="tab">
+          <span>tab content1</span>
+        </tab>
+      </tabs>
+    </div>
+		<input
+      type="text"
+      class="add-item"
+      autofocus
+      placeholder="sth to do"
+      @keyup.enter="handleTodo"
+    >
+		<Item
+      :todo="todo"
+      v-for="todo in filteredTodos"
+      :key="todo.id"
+      @del="deletTodo"
+      @toggle="toggleTodoState"
+    />
+		<Helper
+      :filter="filter"
+      :todos="todos"
+      @toggle="toggleFitter"
+      @clear="clearCompleted"
+    />
 	</section>
 </template>
 <script>
+import {
+  mapState,
+  mapActions
+} from 'vuex'
 import Item from './item.vue'
-import Tabs from './tabs.vue'
+import Helper from './helper.vue'
 let id = 0
 export default {
   name: 'Todo',
   data () {
     return {
-      todos: [],
+      // todos: [],
       todo: {
         id: 0,
         content: 'this is todo',
         completed: false
       },
-      filter: 'all'
+      filter: 'all',
+      tabValue: 'all',
+      states: ['all', 'active', 'completed']
     }
   },
   // tab要传入的数组应该是个根据状态计算得到的数组
   computed: {
+    ...mapState(['todos']),
     filteredTodos () {
       if (this.filter === 'all') {
         return this.todos
@@ -35,27 +66,59 @@ export default {
   },
   components: {
     Item,
-    Tabs
+    Helper
   },
   methods: {
-    addTodo (e) {
-      this.todos.unshift({
+    ...mapActions([
+      'fetchTodos',
+      'addTodo',
+      'deletTodo',
+      'updateTodo',
+      'deleteAllCompleted'
+    ]),
+    handleTodo (e) {
+      const content = e.target.value.trim()
+      if (!content) {
+        this.$notify({
+          content: '必须输入要做的内容'
+        })
+        return
+      }
+      const todo = {
         id: id++,
-        content: e.target.value.trim(),
+        content,
         completed: false
-
-      })
+      }
+      this.addTodo(todo)
       e.target.value = ''
     },
-    deletTodo (id) {
-      this.todos.splice(this.todos.findIndex(todo => todo.id === id), 1)
+    toggleTodoState (todo) {
+      this.updateTodo({
+        id: todo.id,
+        todo: Object.assign({}, todo, {
+          completed: !todo.completed
+        })
+      })
     },
+    clearCompleted () {
+      this.deleteAllCompleted()
+    },
+
+    // deletTodo (id) {
+    //   this.todos.splice(this.todos.findIndex(todo => todo.id === id), 1)
+    // },
     toggleFitter (state) {
       this.filter = state
     },
-    clearCompleted () {
-      this.todos = this.todos.filter(todo => !todo.completed)
+    // clearCompleted () {
+    //   this.todos = this.todos.filter(todo => !todo.completed)
+    // },
+    handleChangeTab (value) {
+      this.tabValue = value
     }
+  },
+  mounted () {
+    this.fetchTodos()
   }
   // beforeRouteEnter (to, from, next) {
   //   console.log('todo before enter')
@@ -90,5 +153,8 @@ export default {
     padding 16px 16px 16px 36px
     border none
     box-shadow inset 0 -2px 1px rgba(0, 0, 0, 0.03)
-
+.tab-container
+    height 25px
+    background-color #eee
+    padding 0 15px
 </style>

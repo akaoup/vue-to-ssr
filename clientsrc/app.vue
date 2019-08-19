@@ -4,8 +4,8 @@
 		<Header></Header>
         <!-- <h1>{{fullName}} {{counter}}</h1>
         <h1>{{textA}} {{textPlus}}</h1> -->
-        <router-link to="/app">app</router-link>
-        <router-link to="/login">login</router-link>
+        <!-- <router-link to="/app">app</router-link>
+        <router-link to="/login">login</router-link> -->
         <transition name="fade" mode="out-in">
             <router-view></router-view>
         </transition>

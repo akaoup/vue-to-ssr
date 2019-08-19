@@ -6,6 +6,36 @@ const app = new Koa()
 // 服务端渲染是分开发环境和生产环境
 const isDev = process.env.NODE_ENV === 'development'
 
+// api && login 开始
+// 处理ctx.request.body
+const koaBody = require('koa-body')
+app.use(koaBody())
+const koaSession = require('koa-session')
+app.keys = ['vue ssr tech']
+app.use(koaSession({
+	key: 'v-ssr-id',
+	maxAge: 2 * 60 * 60 * 1000
+}, app))
+
+// 用户路由
+const userRouter = require('./routers/user.js')
+app.use(userRouter.routes()).use(userRouter.allowedMethods())
+// 数据路由API
+const apiRouter = require('./routers/api.js')
+app.use(apiRouter.routes()).use(apiRouter.allowedMethods())
+// 线上数据库连接
+const createDb = require('./db/db.js')
+const config = require('../app.config.js')
+const db = createDb(config.db.appId, config.db.appKey)
+
+// 拿到db
+app.use(async (ctx, next) => {
+	ctx.db = db
+	await next()
+})
+
+// api && login 结束
+
 const staticRouter = require('./routers/static.js')
 app.use(staticRouter.routes()).use(staticRouter.allowedMethods())
 
@@ -36,6 +66,7 @@ app.use(async (ctx, next) => {
 		}
 	}
 })
+
 app.use(async (ctx, next) => {
 	if (ctx.path === './favicon.ico') {
 		await send(ctx, '/favicon.ico', { root: path.join(__dirname, '../')})
@@ -43,7 +74,6 @@ app.use(async (ctx, next) => {
 		await next()
 	}
 })
-
 
 // pageRouter.routes()是个function查看路由组件的匹配与否
 // pageRouter.allowedMethods()也是个function查看http请求状态码

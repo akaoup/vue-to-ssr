@@ -48,7 +48,11 @@ const devServer = {
 		//开发环境，允许跨域
 		headers: {'Access-Control-Allow-Origin': '*'},
 		// 热刷新，页面不刷新内容也加载
-		hot: true
+		hot: true,
+		proxy: {
+			'/api': 'http://127.0.0.1:3333',
+			'/user': 'http://127.0.0.1:3333'
+		}
 }
 
 

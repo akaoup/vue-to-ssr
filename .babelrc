@@ -4,6 +4,7 @@
 	],
 	"plugins": [
 		"transform-jsx",
+		"transform-vue-jsx",
 		"@babel/plugin-proposal-function-bind",
 		"syntax-dynamic-import"
 	]
